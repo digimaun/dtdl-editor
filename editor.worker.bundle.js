@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 754);
+/******/ 	return __webpack_require__(__webpack_require__.s = 758);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -299,7 +299,7 @@ class ImmortalReference {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__position__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__position__ = __webpack_require__(10);
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -661,6 +661,150 @@ class Range {
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Range;
+
+
+
+/***/ }),
+
+/***/ 10:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+/**
+ * A position in the editor.
+ */
+class Position {
+    constructor(lineNumber, column) {
+        this.lineNumber = lineNumber;
+        this.column = column;
+    }
+    /**
+     * Create a new position from this position.
+     *
+     * @param newLineNumber new line number
+     * @param newColumn new column
+     */
+    with(newLineNumber = this.lineNumber, newColumn = this.column) {
+        if (newLineNumber === this.lineNumber && newColumn === this.column) {
+            return this;
+        }
+        else {
+            return new Position(newLineNumber, newColumn);
+        }
+    }
+    /**
+     * Derive a new position from this position.
+     *
+     * @param deltaLineNumber line number delta
+     * @param deltaColumn column delta
+     */
+    delta(deltaLineNumber = 0, deltaColumn = 0) {
+        return this.with(this.lineNumber + deltaLineNumber, this.column + deltaColumn);
+    }
+    /**
+     * Test if this position equals other position
+     */
+    equals(other) {
+        return Position.equals(this, other);
+    }
+    /**
+     * Test if position `a` equals position `b`
+     */
+    static equals(a, b) {
+        if (!a && !b) {
+            return true;
+        }
+        return (!!a &&
+            !!b &&
+            a.lineNumber === b.lineNumber &&
+            a.column === b.column);
+    }
+    /**
+     * Test if this position is before other position.
+     * If the two positions are equal, the result will be false.
+     */
+    isBefore(other) {
+        return Position.isBefore(this, other);
+    }
+    /**
+     * Test if position `a` is before position `b`.
+     * If the two positions are equal, the result will be false.
+     */
+    static isBefore(a, b) {
+        if (a.lineNumber < b.lineNumber) {
+            return true;
+        }
+        if (b.lineNumber < a.lineNumber) {
+            return false;
+        }
+        return a.column < b.column;
+    }
+    /**
+     * Test if this position is before other position.
+     * If the two positions are equal, the result will be true.
+     */
+    isBeforeOrEqual(other) {
+        return Position.isBeforeOrEqual(this, other);
+    }
+    /**
+     * Test if position `a` is before position `b`.
+     * If the two positions are equal, the result will be true.
+     */
+    static isBeforeOrEqual(a, b) {
+        if (a.lineNumber < b.lineNumber) {
+            return true;
+        }
+        if (b.lineNumber < a.lineNumber) {
+            return false;
+        }
+        return a.column <= b.column;
+    }
+    /**
+     * A function that compares positions, useful for sorting
+     */
+    static compare(a, b) {
+        let aLineNumber = a.lineNumber | 0;
+        let bLineNumber = b.lineNumber | 0;
+        if (aLineNumber === bLineNumber) {
+            let aColumn = a.column | 0;
+            let bColumn = b.column | 0;
+            return aColumn - bColumn;
+        }
+        return aLineNumber - bLineNumber;
+    }
+    /**
+     * Clone this position.
+     */
+    clone() {
+        return new Position(this.lineNumber, this.column);
+    }
+    /**
+     * Convert to a human-readable representation.
+     */
+    toString() {
+        return '(' + this.lineNumber + ',' + this.column + ')';
+    }
+    // ---
+    /**
+     * Create a `Position` from an `IPosition`.
+     */
+    static lift(pos) {
+        return new Position(pos.lineNumber, pos.column);
+    }
+    /**
+     * Test if `obj` is an `IPosition`.
+     */
+    static isIPosition(obj) {
+        return (obj
+            && (typeof obj.lineNumber === 'number')
+            && (typeof obj.column === 'number'));
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Position;
 
 
 
@@ -2783,7 +2927,7 @@ class PrefixSumComputer {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_common_event__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__base_common_keyCodes__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__base_common_uri__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_position__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_position__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_range__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_selection__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__core_token__ = __webpack_require__(97);
@@ -2840,7 +2984,7 @@ function createMonacoBaseAPI() {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["c"] = logOnceWebWorkerWarning;
 /* unused harmony export create */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__errors__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__errors__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lifecycle__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__platform__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__types__ = __webpack_require__(18);
@@ -3643,7 +3787,7 @@ function withNullAsUndefined(x) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__position__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__position__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__range__ = __webpack_require__(1);
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
@@ -3781,7 +3925,7 @@ class Selection extends __WEBPACK_IMPORTED_MODULE_1__range__["a" /* Range */] {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Event; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__errors__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__errors__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lifecycle__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__linkedList__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stopwatch__ = __webpack_require__(61);
@@ -5058,7 +5202,7 @@ class DiffChange {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_common_diff_diff__ = __webpack_require__(103);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__base_common_platform__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__base_common_uri__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_position__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_position__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_range__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__diff_diffComputer__ = __webpack_require__(210);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__model_mirrorTextModel__ = __webpack_require__(211);
@@ -5971,7 +6115,7 @@ function createContinueProcessingPredicate(maximumRuntime) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__base_common_strings__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_position__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core_position__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__viewModel_prefixSumComputer__ = __webpack_require__(144);
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
@@ -6595,7 +6739,7 @@ class CancellationTokenSource {
 /* harmony export (immutable) */ __webpack_exports__["a"] = KeyChord;
 /* harmony export (immutable) */ __webpack_exports__["f"] = createKeybinding;
 /* unused harmony export createSimpleKeybinding */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__errors__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__errors__ = __webpack_require__(9);
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9315,116 +9459,6 @@ const sep = (__WEBPACK_IMPORTED_MODULE_0__process__["c" /* platform */] === 'win
 
 /***/ }),
 
-/***/ 7:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["e"] = onUnexpectedError;
-/* harmony export (immutable) */ __webpack_exports__["f"] = onUnexpectedExternalError;
-/* harmony export (immutable) */ __webpack_exports__["g"] = transformErrorForSerialization;
-/* harmony export (immutable) */ __webpack_exports__["d"] = isPromiseCanceledError;
-/* harmony export (immutable) */ __webpack_exports__["a"] = canceled;
-/* harmony export (immutable) */ __webpack_exports__["b"] = illegalArgument;
-/* harmony export (immutable) */ __webpack_exports__["c"] = illegalState;
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
-// Avoid circular dependency on EventEmitter by implementing a subset of the interface.
-class ErrorHandler {
-    constructor() {
-        this.listeners = [];
-        this.unexpectedErrorHandler = function (e) {
-            setTimeout(() => {
-                if (e.stack) {
-                    throw new Error(e.message + '\n\n' + e.stack);
-                }
-                throw e;
-            }, 0);
-        };
-    }
-    emit(e) {
-        this.listeners.forEach((listener) => {
-            listener(e);
-        });
-    }
-    onUnexpectedError(e) {
-        this.unexpectedErrorHandler(e);
-        this.emit(e);
-    }
-    // For external errors, we don't want the listeners to be called
-    onUnexpectedExternalError(e) {
-        this.unexpectedErrorHandler(e);
-    }
-}
-/* unused harmony export ErrorHandler */
-
-const errorHandler = new ErrorHandler();
-/* unused harmony export errorHandler */
-
-function onUnexpectedError(e) {
-    // ignore errors from cancelled promises
-    if (!isPromiseCanceledError(e)) {
-        errorHandler.onUnexpectedError(e);
-    }
-    return undefined;
-}
-function onUnexpectedExternalError(e) {
-    // ignore errors from cancelled promises
-    if (!isPromiseCanceledError(e)) {
-        errorHandler.onUnexpectedExternalError(e);
-    }
-    return undefined;
-}
-function transformErrorForSerialization(error) {
-    if (error instanceof Error) {
-        let { name, message } = error;
-        const stack = error.stacktrace || error.stack;
-        return {
-            $isError: true,
-            name,
-            message,
-            stack
-        };
-    }
-    // return as is
-    return error;
-}
-const canceledName = 'Canceled';
-/**
- * Checks if the given error is a promise in canceled state
- */
-function isPromiseCanceledError(error) {
-    return error instanceof Error && error.name === canceledName && error.message === canceledName;
-}
-/**
- * Returns an error that signals cancellation.
- */
-function canceled() {
-    const error = new Error(canceledName);
-    error.name = error.message;
-    return error;
-}
-function illegalArgument(name) {
-    if (name) {
-        return new Error(`Illegal argument: ${name}`);
-    }
-    else {
-        return new Error('Illegal argument');
-    }
-}
-function illegalState(name) {
-    if (name) {
-        return new Error(`Illegal state: ${name}`);
-    }
-    else {
-        return new Error('Illegal state');
-    }
-}
-
-
-/***/ }),
-
 /***/ 75:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -9489,7 +9523,7 @@ class CharacterSet {
 
 /***/ }),
 
-/***/ 754:
+/***/ 758:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9799,150 +9833,6 @@ StringSHA1._bigBlock32 = new DataView(new ArrayBuffer(320)); // 80 * 4 = 320
 
 /***/ }),
 
-/***/ 8:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
-/**
- * A position in the editor.
- */
-class Position {
-    constructor(lineNumber, column) {
-        this.lineNumber = lineNumber;
-        this.column = column;
-    }
-    /**
-     * Create a new position from this position.
-     *
-     * @param newLineNumber new line number
-     * @param newColumn new column
-     */
-    with(newLineNumber = this.lineNumber, newColumn = this.column) {
-        if (newLineNumber === this.lineNumber && newColumn === this.column) {
-            return this;
-        }
-        else {
-            return new Position(newLineNumber, newColumn);
-        }
-    }
-    /**
-     * Derive a new position from this position.
-     *
-     * @param deltaLineNumber line number delta
-     * @param deltaColumn column delta
-     */
-    delta(deltaLineNumber = 0, deltaColumn = 0) {
-        return this.with(this.lineNumber + deltaLineNumber, this.column + deltaColumn);
-    }
-    /**
-     * Test if this position equals other position
-     */
-    equals(other) {
-        return Position.equals(this, other);
-    }
-    /**
-     * Test if position `a` equals position `b`
-     */
-    static equals(a, b) {
-        if (!a && !b) {
-            return true;
-        }
-        return (!!a &&
-            !!b &&
-            a.lineNumber === b.lineNumber &&
-            a.column === b.column);
-    }
-    /**
-     * Test if this position is before other position.
-     * If the two positions are equal, the result will be false.
-     */
-    isBefore(other) {
-        return Position.isBefore(this, other);
-    }
-    /**
-     * Test if position `a` is before position `b`.
-     * If the two positions are equal, the result will be false.
-     */
-    static isBefore(a, b) {
-        if (a.lineNumber < b.lineNumber) {
-            return true;
-        }
-        if (b.lineNumber < a.lineNumber) {
-            return false;
-        }
-        return a.column < b.column;
-    }
-    /**
-     * Test if this position is before other position.
-     * If the two positions are equal, the result will be true.
-     */
-    isBeforeOrEqual(other) {
-        return Position.isBeforeOrEqual(this, other);
-    }
-    /**
-     * Test if position `a` is before position `b`.
-     * If the two positions are equal, the result will be true.
-     */
-    static isBeforeOrEqual(a, b) {
-        if (a.lineNumber < b.lineNumber) {
-            return true;
-        }
-        if (b.lineNumber < a.lineNumber) {
-            return false;
-        }
-        return a.column <= b.column;
-    }
-    /**
-     * A function that compares positions, useful for sorting
-     */
-    static compare(a, b) {
-        let aLineNumber = a.lineNumber | 0;
-        let bLineNumber = b.lineNumber | 0;
-        if (aLineNumber === bLineNumber) {
-            let aColumn = a.column | 0;
-            let bColumn = b.column | 0;
-            return aColumn - bColumn;
-        }
-        return aLineNumber - bLineNumber;
-    }
-    /**
-     * Clone this position.
-     */
-    clone() {
-        return new Position(this.lineNumber, this.column);
-    }
-    /**
-     * Convert to a human-readable representation.
-     */
-    toString() {
-        return '(' + this.lineNumber + ',' + this.column + ')';
-    }
-    // ---
-    /**
-     * Create a `Position` from an `IPosition`.
-     */
-    static lift(pos) {
-        return new Position(pos.lineNumber, pos.column);
-    }
-    /**
-     * Test if `obj` is an `IPosition`.
-     */
-    static isIPosition(obj) {
-        return (obj
-            && (typeof obj.lineNumber === 'number')
-            && (typeof obj.column === 'number'));
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Position;
-
-
-
-/***/ }),
-
 /***/ 88:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -9970,6 +9860,116 @@ function toUint32(v) {
         return 4294967295 /* MAX_UINT_32 */;
     }
     return v | 0;
+}
+
+
+/***/ }),
+
+/***/ 9:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["e"] = onUnexpectedError;
+/* harmony export (immutable) */ __webpack_exports__["f"] = onUnexpectedExternalError;
+/* harmony export (immutable) */ __webpack_exports__["g"] = transformErrorForSerialization;
+/* harmony export (immutable) */ __webpack_exports__["d"] = isPromiseCanceledError;
+/* harmony export (immutable) */ __webpack_exports__["a"] = canceled;
+/* harmony export (immutable) */ __webpack_exports__["b"] = illegalArgument;
+/* harmony export (immutable) */ __webpack_exports__["c"] = illegalState;
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+// Avoid circular dependency on EventEmitter by implementing a subset of the interface.
+class ErrorHandler {
+    constructor() {
+        this.listeners = [];
+        this.unexpectedErrorHandler = function (e) {
+            setTimeout(() => {
+                if (e.stack) {
+                    throw new Error(e.message + '\n\n' + e.stack);
+                }
+                throw e;
+            }, 0);
+        };
+    }
+    emit(e) {
+        this.listeners.forEach((listener) => {
+            listener(e);
+        });
+    }
+    onUnexpectedError(e) {
+        this.unexpectedErrorHandler(e);
+        this.emit(e);
+    }
+    // For external errors, we don't want the listeners to be called
+    onUnexpectedExternalError(e) {
+        this.unexpectedErrorHandler(e);
+    }
+}
+/* unused harmony export ErrorHandler */
+
+const errorHandler = new ErrorHandler();
+/* unused harmony export errorHandler */
+
+function onUnexpectedError(e) {
+    // ignore errors from cancelled promises
+    if (!isPromiseCanceledError(e)) {
+        errorHandler.onUnexpectedError(e);
+    }
+    return undefined;
+}
+function onUnexpectedExternalError(e) {
+    // ignore errors from cancelled promises
+    if (!isPromiseCanceledError(e)) {
+        errorHandler.onUnexpectedExternalError(e);
+    }
+    return undefined;
+}
+function transformErrorForSerialization(error) {
+    if (error instanceof Error) {
+        let { name, message } = error;
+        const stack = error.stacktrace || error.stack;
+        return {
+            $isError: true,
+            name,
+            message,
+            stack
+        };
+    }
+    // return as is
+    return error;
+}
+const canceledName = 'Canceled';
+/**
+ * Checks if the given error is a promise in canceled state
+ */
+function isPromiseCanceledError(error) {
+    return error instanceof Error && error.name === canceledName && error.message === canceledName;
+}
+/**
+ * Returns an error that signals cancellation.
+ */
+function canceled() {
+    const error = new Error(canceledName);
+    error.name = error.message;
+    return error;
+}
+function illegalArgument(name) {
+    if (name) {
+        return new Error(`Illegal argument: ${name}`);
+    }
+    else {
+        return new Error('Illegal argument');
+    }
+}
+function illegalState(name) {
+    if (name) {
+        return new Error(`Illegal state: ${name}`);
+    }
+    else {
+        return new Error('Illegal state');
+    }
 }
 
 
